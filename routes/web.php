@@ -18,8 +18,16 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+Route::get('/admin', 'HomeController@admin');
+
 Route::post('/rebate', 'RebateController@store');
 
-Route::get('protected', ['middleware' => ['auth', 'admin'], function() {
-    return "this page requires that you be logged in and an Admin";
-}]);
+Route::get('/rebate/edit/{id}', 'HomeController@edit');
+
+Route::get('/rebate/{id}/pdf', 'HomeController@edit');
+
+Route::put('/rebate/update/{id}',[
+    'as' => 'rebate.update',
+    'uses' => 'HomeController@update'
+]);

@@ -8,17 +8,19 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('BlueWorld Rebates', 'BlueWorld Rebates') }}</title>
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
 
     <!-- Scripts -->
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     <script>
         window.Laravel = <?php echo json_encode([
             'csrfToken' => csrf_token(),
         ]); ?>
     </script>
+
 </head>
 <body>
     <div id="app">
@@ -35,8 +37,8 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                    <a class="navbar-brand" href="{{ url('/home') }}">
+                        {{ config('BlueWorld', 'BlueWorld') }}
                     </a>
                 </div>
 
@@ -52,6 +54,29 @@
                         @if (Auth::guest())
                             <li><a href="{{ url('/login') }}">Login</a></li>
                             <li><a href="{{ url('/register') }}">Register</a></li>
+                        @elseif (Auth::user()->admin())
+                            <li>
+                                <h4> Logged in as Administator</h4> 
+                            </li>
+                           <li class="dropdown">
+                               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                   {{ Auth::user()->name }} <span class="caret"></span>
+                               </a>
+
+                               <ul class="dropdown-menu" role="menu">
+                                   <li>
+                                       <a href="{{ url('/logout') }}"
+                                           onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                           Logout
+                                       </a>
+
+                                       <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                           {{ csrf_field() }}
+                                       </form>
+                                   </li>
+                               </ul>
+                           </li>
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">

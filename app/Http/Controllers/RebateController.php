@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Rebate;
+use Illuminate\Support\Facades\Input;
 
 class RebateController extends Controller
 {
@@ -29,6 +30,7 @@ class RebateController extends Controller
     		'comp_state' => 'required',
     		'comp_zip' => 'required|max:5',
     		'comp_phone' => 'required',
+            'g-recaptcha-response' => 'required|recaptcha',
     		'pdf_file_path' => 'required|mimes:pdf'
     	));
     	$rebate = new Rebate;
@@ -45,13 +47,22 @@ class RebateController extends Controller
     	$rebate->comp_info = $request->comp_info;
     	$rebate->comp_name = $request->comp_name;
     	$rebate->comp_address = $request->comp_address;
-    	$rebate->comp_city = $request->comp_state;
+    	$rebate->comp_city = $request->comp_city;
+    	$rebate->comp_state = $request->comp_state;
     	$rebate->comp_zip = $request->comp_zip;
     	$rebate->comp_phone = $request->comp_phone;
-    	$rebate->pdf_file_path = $request->pdf_file_path;
+
+        $token = $request->input('g-recaptcha-response');
+        $storage= storage_path('app/public');
+        $request->pdf_file_path->move($storage);
+
+        $pdf = $request->pdf_file_path->getClientOriginalName();
+      
+        $rebate->pdf_file_path = $storage.'/'.$pdf;
 
     	$rebate->save();
-    	return Redirect::back()->withSuccess('Your rebate has been sent. An admin will review your submission.');
+
+    	return redirect('home')->with('message','Your rebate has been submitted!');
     }
 
 }
