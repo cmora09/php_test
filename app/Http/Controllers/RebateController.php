@@ -53,13 +53,15 @@ class RebateController extends Controller
     	$rebate->comp_phone = $request->comp_phone;
 
         $token = $request->input('g-recaptcha-response');
-        $storage= storage_path('app/public');
-        $request->pdf_file_path->move($storage);
 
-        $pdf = $request->pdf_file_path->getClientOriginalName();
-      
-        $rebate->pdf_file_path = $storage.'/'.$pdf;
+        $storagePath = storage_path('app/public');
 
+        $uploadedPdf = $request->file('pdf_file_path');
+
+        $pdfName = $uploadedPdf->getClientOriginalName();
+        
+        $uploadedPdf-> move($storagePath,$pdfName);
+        $rebate->pdf_file_path = $pdfName;
     	$rebate->save();
 
     	return redirect('home')->with('message','Your rebate has been submitted!');
