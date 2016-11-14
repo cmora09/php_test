@@ -25,7 +25,16 @@ Route::post('/rebate', 'RebateController@store');
 
 Route::get('/rebate/edit/{id}', 'HomeController@edit');
 
-Route::get('/rebate/{id}/pdf', 'HomeController@edit');
+Route::get('/pdf/{pdfname}', function($pdfname){
+	$path = storage_path('app/public').'/'.$pdfname;
+	$pdf = File::get($path);
+	$mime = File::mimeType($path);
+
+	$response = Response::make($pdf,200);
+	$response->header("Content-type",$mime);
+
+	return $response;
+});
 
 Route::put('/rebate/update/{id}',[
     'as' => 'rebate.update',

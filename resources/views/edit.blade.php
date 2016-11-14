@@ -8,7 +8,7 @@
 			@endif
 		{!! Form::model($rebate, ['route' => ['rebate.update', $rebate->id], 'method' => 'PUT']) !!}
 			<h4 class="text-center">User information</h4>
-			<a href="{{$path}}"><h4>Invoice</h4></a>
+			<a href="{{url('/pdf'.'/'.$pdf)}}"><h4>Invoice</h4></a>
 			<div class="form-group">
 			    {{Form::label('fname', 'First Name: ')}}
 			    {{Form::text('fname', null, array('class' => 'form-control'))}}

@@ -40,8 +40,7 @@ class HomeController extends Controller
         $rebate = Rebate::find($id);
         $pdf = $rebate->pdf_file_path;
         $rebate = Rebate::find($id);
-        $path = storage_path('app/public').'/'.$pdf;
-        return view('edit')->withRebate($rebate)->withPath($path);
+        return view('edit')->withRebate($rebate)->withPdf($pdf);
    
     }
 
